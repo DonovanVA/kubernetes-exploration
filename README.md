@@ -8,7 +8,7 @@ kubectl apply -f ./deployments/config-map.yaml
 
 #### 2. CI/CD Integration:
 This workflow is suitable for Azure kubernetes service (AKS) using Azure service principal
-the following workflow is triggered on commit:
+the following workflow is triggered on commit to `main` branch:
 repository secrets required:
 DOCKER_USERNAME - username of your docker account (donnyvan)
 DOCKER_PASSWORD - password of your docker account
