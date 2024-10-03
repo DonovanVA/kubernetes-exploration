@@ -15,8 +15,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         env:
-          DOCKER_USERNAME: ${{ github.event.client_payload.docker_username }}
-          DOCKER_PASSWORD: ${{ github.event.client_payload.docker_password }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         with:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ env.DOCKER_PASSWORD }}
@@ -27,23 +27,23 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         env:
-          DOCKER_USERNAME: ${{ github.event.client_payload.docker_username }}
-          DOCKER_PASSWORD: ${{ github.event.client_payload.docker_password }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ env.DOCKER_USERNAME }}/interview-app:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/interview-app:latest
         
       - name: Trigger Kubernetes Apply Workflow
         uses: peter-evans/repository-dispatch@v1
         env:
-          GITHUB_TOKEN: ${{ github.event.client_payload.github_token }}
-          KUBE_CREDENTIALS_CLIENTID: ${{ github.event.client_payload.kube_credentials_clientid }}
-          KUBE_CREDENTIALS_CLIENTSECRET: ${{ github.event.client_payload.kube_credentials_clientsecret }}
-          KUBE_CREDENTIALS_TENANTID: ${{ github.event.client_payload.kube_credentials_tenantid }}
-          KUBE_CREDENTIALS_SUBSCRIPTIONID: ${{ github.event.client_payload.kube_credentials_subscriptionid }}
-          DOCKER_USERNAME: ${{ github.event.client_payload.docker_username }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          KUBE_CREDENTIALS_CLIENTID: ${{ secrets.KUBE_CREDENTIALS_CLIENTID }}
+          KUBE_CREDENTIALS_CLIENTSECRET: ${{ secrets.KUBE_CREDENTIALS_CLIENTSECRET }}
+          KUBE_CREDENTIALS_TENANTID: ${{ secrets.KUBE_CREDENTIALS_TENANTID }}
+          KUBE_CREDENTIALS_SUBSCRIPTIONID: ${{ secrets.KUBE_CREDENTIALS_SUBSCRIPTIONID }}
         with:
           token: ${{ env.GITHUB_TOKEN }}
           event-type: 02-apply-deploy
