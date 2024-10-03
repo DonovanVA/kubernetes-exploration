@@ -4,7 +4,7 @@ metadata:
   name: interview-app
   namespace: default
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: interview-app
@@ -47,21 +47,6 @@ spec:
       port: 80
       targetPort: 3000
 ---
-apiVersion: projectcontour.io/v1
-kind: HTTPProxy
-metadata:
-  name: interview-app-http
-  namespace:  default #interview-app
-spec:
-  virtualhost:
-    fqdn: interview-app.interns.dev.projectinnovate.net
-    tls:
-      secretName: interview-appdora
-  routes:
-    - services:
-        - name: interview-app-service
-          port: 80
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -72,7 +57,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /interview-test
+          - path: /interview-app
             pathType: Prefix
             backend:
               service:

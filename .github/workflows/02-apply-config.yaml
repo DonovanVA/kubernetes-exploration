@@ -50,7 +50,9 @@ jobs:
       
       - name: Apply Kubernetes YAML
         run: | 
-          kubectl apply -f ./deployments/deploy.yaml
+          kubectl apply -f ./deployments/config-map.yaml
+          kubectl apply -f ./deployments/secrets.yaml
+          kubectl apply -f ./deployments/auto-deploy.yaml
 
       - name: Checkout repo
         uses: actions/checkout@v4
