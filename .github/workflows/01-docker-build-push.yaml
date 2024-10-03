@@ -2,8 +2,7 @@ name: Docker Build and Push
 
 on:
   repository_dispatch:
-    types:
-      - 01-start-build-and-push-image
+    types: [01-docker-build-push]
 
 jobs:
   build:
