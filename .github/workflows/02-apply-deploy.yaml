@@ -14,10 +14,10 @@ jobs:
       - name: Azure Login
         uses: Azure/login@v1.4.6
         env:
-          CLIENT_ID: ${{ github.event.client_payload.kube_credentials_clientid }}
-          CLIENT_SECRET: ${{ github.event.client_payload.kube_credentials_clientsecret }}
-          SUBSCRIPTION_ID: ${{ github.event.client_payload.kube_credentials_subscriptionid}}
-          TENANT_ID: ${{ github.event.client_payload.kube_credentials_tenantid }}
+          CLIENT_ID: ${{ secrets.KUBE_CREDENTIALS_CLIENTID }}
+          CLIENT_SECRET: ${{ secrets.KUBE_CREDENTIALS_CLIENTSECRET }}
+          SUBSCRIPTION_ID: ${{ secrets.KUBE_CREDENTIALS_SUBSCRIPTIONID }}
+          TENANT_ID: ${{ secrets.KUBE_CREDENTIALS_TENANTID }}
         with:
           creds: '{"clientId":"${{ env.CLIENT_ID }}","clientSecret":"${{ env.CLIENT_SECRET }}","subscriptionId":"${{ env.SUBSCRIPTION_ID }}","tenantId":"${{ env.TENANT_ID }}"}'
 
@@ -33,17 +33,17 @@ jobs:
 
       - name: Login to cluster
         env:
-          CLIENT_ID: ${{ github.event.client_payload.kube_credentials_clientid }}
-          CLIENT_SECRET: ${{ github.event.client_payload.kube_credentials_clientsecret }}
-          SUBSCRIPTION_ID: ${{ github.event.client_payload.kube_credentials_subscriptionid}}
-          TENANT_ID: ${{ github.event.client_payload.kube_credentials_tenantid }}
+          CLIENT_ID: ${{ secrets.KUBE_CREDENTIALS_CLIENTID }}
+          CLIENT_SECRET: ${{ secrets.KUBE_CREDENTIALS_CLIENTSECRET }}
+          SUBSCRIPTION_ID: ${{ secrets.KUBE_CREDENTIALS_SUBSCRIPTIONID }}
+          TENANT_ID: ${{ secrets.KUBE_CREDENTIALS_TENANTID }}
         run: |
           az account set --subscription "${{env.SUBSCRIPTION_ID}}"
           az aks get-credentials --resource-group "rclu_group" --name "rcluster"
         
       - name: Replace Placeholder in File
         env:
-          DOCKER_USERNAME: ${{ github.event.client_payload.docker_username }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
           sed -i 's/<GH_ACTION.docker_username>/${{env.DOCKER_USERNAME}}/g' ./deployments/deploy.yaml
           cat ./deployments/deploy.yaml   
