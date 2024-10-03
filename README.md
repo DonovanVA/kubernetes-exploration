@@ -20,7 +20,7 @@ KUBE_CREDENTIALS_SUBSCRIPTIONID: Azure subscription ID
 
 1. 00-retrieves-secrets.yaml storing all the secrets
 2. 01-docker-build-push.yaml to build and push images to dockerhub 
-3. 02-apply-config.yaml to apply the kubernetes configurations in `/deployments` folder:
+3. 02-apply-deploy.yaml to apply the kubernetes configurations in `/deployments` folder:
     - config-map.yaml
     - secrets.yaml
     - auto-deploy.yaml
