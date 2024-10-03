@@ -4,6 +4,7 @@
 #### 1. Kubernetes Deployment:
 ``` bash
 kubectl apply -f ./deployments/config-map.yaml
+kubectl apply -f ./deployments/secrets.yaml
 ```
 
 #### 2. CI/CD Integration:
