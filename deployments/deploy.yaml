@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interview-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: interview-app
+  template:
+    metadata:
+      labels:
+        app: interview-app
+    spec:
+      containers:
+        - name: interview-app
+          image: <GH_ACTION.docker_username>/interview-app:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: interview-app-config  # ConfigMap
+            - secretRef:
+                name: interview-app-secret  # Secret
+          resources:  # cpu resources
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: interview-app-service
+  namespace:  default #interview-app
+spec:
+  selector:
+    app: interview-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: interview-app-http
+  namespace:  default #interview-app
+spec:
+  virtualhost:
+    fqdn: interview-app.interns.dev.projectinnovate.net
+    tls:
+      secretName: interview-appdora
+  routes:
+    - services:
+        - name: interview-app-service
+          port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: interview-app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /interview-test
+            pathType: Prefix
+            backend:
+              service:
+                name: interview-app-service
+                port:
+                  number: 80

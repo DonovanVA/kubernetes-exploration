@@ -1,0 +1,51 @@
+name: Docker Build and Push
+
+on:
+  repository_dispatch:
+    types:
+      - 01-start-build-and-push-image
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        env:
+          DOCKER_USERNAME: ${{ github.event.client_payload.docker_username }}
+          DOCKER_PASSWORD: ${{ github.event.client_payload.docker_password }}
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        env:
+          DOCKER_USERNAME: ${{ github.event.client_payload.docker_username }}
+          DOCKER_PASSWORD: ${{ github.event.client_payload.docker_password }}
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ env.DOCKER_USERNAME }}/interview-app:latest
+        
+      - name: Trigger Kubernetes Apply Workflow
+        uses: peter-evans/repository-dispatch@v1
+        env:
+          GITHUB_TOKEN: ${{ github.event.client_payload.github_token }}
+          KUBE_CREDENTIALS_CLIENTID: ${{ github.event.client_payload.kube_credentials_clientid }}
+          KUBE_CREDENTIALS_CLIENTSECRET: ${{ github.event.client_payload.kube_credentials_clientsecret }}
+          KUBE_CREDENTIALS_TENANTID: ${{ github.event.client_payload.kube_credentials_tenantid }}
+          KUBE_CREDENTIALS_SUBSCRIPTIONID: ${{ github.event.client_payload.kube_credentials_subscriptionid }}
+          DOCKER_USERNAME: ${{ github.event.client_payload.docker_username }}
+        with:
+          token: ${{ env.GITHUB_TOKEN }}
+          event-type: 02-apply-deploy
+          client-payload: '{"kube_credentials_clientid": "${{ env.KUBE_CREDENTIALS_CLIENTID }}","kube_credentials_clientsecret": "${{ env.KUBE_CREDENTIALS_CLIENTSECRET }}","kube_credentials_tenantid": "${{ env.KUBE_CREDENTIALS_TENANTID }}","kube_credentials_subscriptionid": "${{ env.KUBE_CREDENTIALS_SUBSCRIPTIONID }}", "docker_username": "${{ env.DOCKER_USERNAME }}"}'

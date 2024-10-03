@@ -1,0 +1,63 @@
+name: Apply Kubernetes YAML After Container Push
+
+on:
+  repository_dispatch:
+    types: [02-apply-deploy]
+
+jobs:
+  apply-k8s:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: Azure/login@v1.4.6
+        env:
+          CLIENT_ID: ${{ github.event.client_payload.kube_credentials_clientid }}
+          CLIENT_SECRET: ${{ github.event.client_payload.kube_credentials_clientsecret }}
+          SUBSCRIPTION_ID: ${{ github.event.client_payload.kube_credentials_subscriptionid}}
+          TENANT_ID: ${{ github.event.client_payload.kube_credentials_tenantid }}
+        with:
+          creds: '{"clientId":"${{ env.CLIENT_ID }}","clientSecret":"${{ env.CLIENT_SECRET }}","subscriptionId":"${{ env.SUBSCRIPTION_ID }}","tenantId":"${{ env.TENANT_ID }}"}'
+
+      - name: Verify azure subscription
+        run: |
+          az account list
+         
+      - name: Setup Kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.15.0' # default is latest stable
+        id: install
+
+      - name: Login to cluster
+        env:
+          CLIENT_ID: ${{ github.event.client_payload.kube_credentials_clientid }}
+          CLIENT_SECRET: ${{ github.event.client_payload.kube_credentials_clientsecret }}
+          SUBSCRIPTION_ID: ${{ github.event.client_payload.kube_credentials_subscriptionid}}
+          TENANT_ID: ${{ github.event.client_payload.kube_credentials_tenantid }}
+        run: |
+          az account set --subscription "${{env.SUBSCRIPTION_ID}}"
+          az aks get-credentials --resource-group "rclu_group" --name "rcluster"
+        
+      - name: Replace Placeholder in File
+        env:
+          DOCKER_USERNAME: ${{ github.event.client_payload.docker_username }}
+        run: |
+          sed -i 's/<GH_ACTION.docker_username>/${{env.DOCKER_USERNAME}}/g' ./deployments/deploy.yaml
+          cat ./deployments/deploy.yaml   
+      
+      - name: Apply Kubernetes YAML
+        run: | 
+          kubectl apply -f ./deployments/deploy.yaml
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Perform Azure CLI operations
+      - name: Azure CLI script
+        run: |
+          az logout
+          az cache purge
+          az account clear
