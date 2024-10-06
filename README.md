@@ -1,5 +1,5 @@
 # Interview-task
-## Pre-requisite: Install minikube for local testing of 1. and 3.:
+## Pre-requisite: Install minikube for local testing of Task 1 and Task 3.:
 The following local minikube must be installed on an amd/64 architecture device, to follow and standardize the same architecture across Azure and github actions (github actions build images using amd64) or you would be getting ImagePullBackoff
 
 Checkout how to install minikube for local cluster:
