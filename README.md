@@ -22,11 +22,11 @@ minikube start
 ```
 *if an error occurs or if you have previously ran a cluster, run `minikube delete`, then `minikube start` 
 
-3. install and view the minikube kubectl CLI:
+3. Install and view the minikube kubectl CLI:
 ```bash
 minikube kubectl -- get po -A
 ```
-4. enable ingress addon:
+4. Enable ingress addon:
 ```bash
 minikube addons enable ingress
 minikube addons enable ingress-dns
