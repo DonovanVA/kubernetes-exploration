@@ -1,5 +1,5 @@
 # Interview-task
-## Install minikube for local testing of 1. and 3.:
+## Pre-requisite: Install minikube for local testing of 1. and 3.:
 The following local minikube must be installed on an amd/64 architecture device, to follow the standardize the same architecture across Azure and github actions (github actions build images using amd64) or you will be getting ImagePullBackoff
 Checkout how to install minikube for local cluster:
 https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Farm64%2Fstable%2Fbinary+download
@@ -25,7 +25,7 @@ minikube addons enable ingress
 minikube addons enable ingress-dns
 ```
 
-## 1. Kubernetes Deployment:
+## Task 1: Kubernetes Deployment:
 Run the following set of commands to launch deployment of deployment, service, configMap, secrets and ingress
 ``` bash
 kubectl apply -f ./deployments/config-map.yaml
@@ -43,7 +43,7 @@ You can now check in `http://localhost:5000`
 The deployment above also have rolling update strategy and a horizontal autoscaler if more than 70% of CPU is utilised
 *Path-based routing via ingress is possible through a fully qualified domain name (FQDN), the route configured here is "/interview-app"
 
-## 2. CI/CD Integration:
+## Task 2: CI/CD Integration:
 This workflow is suitable for Azure kubernetes service (AKS) using Azure service principal (Unforunately, I do not have access to an AKS at the moment, the current secrets are dummy secrets)
 the following workflow is triggered on commit to `main` branch using Github actions:
 These are the repository secrets required under `settings` -> `Secrets and Variables` -> `Actions` -> `Repository Secrets`:
@@ -62,7 +62,7 @@ Additionally, you have to enable the workflow to read and write files under `rep
     - secrets.yaml
     - auto-deploy.yaml
 
-## 3. Monitoring setup:
+## Task 3: Monitoring setup:
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
