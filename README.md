@@ -43,15 +43,15 @@ The deployment above also have rolling update strategy and an autoscaler if more
 * Path-based routing via ingress is possible through a domain name.
 
 #### 2. CI/CD Integration:
-This workflow is suitable for Azure kubernetes service (AKS) using Azure service principal
+This workflow is suitable for Azure kubernetes service (AKS) using Azure service principal (Unforunately, I do not have access to an AKS at the moment, the current secrets are dummy secrets)
 the following workflow is triggered on commit to `main` branch using Github actions:
 These are the repository secrets required under `settings` -> `Secrets and Variables` -> `Actions` -> `Repository Secrets`:
-DOCKER_USERNAME - username of your docker account (donnyvan)
-DOCKER_PASSWORD - password of your docker account
-KUBE_CREDENTIALS_CLIENTID: Azure service principal client ID
-KUBE_CREDENTIALS_CLIENTSECRET: Azure service principal client secret
-KUBE_CREDENTIALS_TENANTID: Azure tenant ID
-KUBE_CREDENTIALS_SUBSCRIPTIONID: Azure subscription ID
+- DOCKER_USERNAME - username of your docker account (donnyvan)
+- DOCKER_PASSWORD - password of your docker account
+- KUBE_CREDENTIALS_CLIENTID: Azure service principal client ID
+- KUBE_CREDENTIALS_CLIENTSECRET: Azure service principal client secret
+- KUBE_CREDENTIALS_TENANTID: Azure tenant ID
+- KUBE_CREDENTIALS_SUBSCRIPTIONID: Azure subscription ID
 
 Additionally, you have to enable the workflow to read and write files under `repo` -> `settings` -> `Actions` -> `General` -> `Workflow permissions` -> `Read and Write permissions` to trigger cross-repository dispatch since the CI/CD workflow has to be triggered sequentially:
 1. 00-retrieves-secrets.yaml storing all the secrets
@@ -78,9 +78,15 @@ prometheus will be found on: `http://localhost:9090` and grafana will be found o
 
 
 default grafana credentials:
-username: admin
-pw: prom-operator
+- username: admin
+- pw: prom-operator
 
-prometheus will extract metrics from the application, and then
+prometheus will extract metrics from the application, and then grafana will interface it and retrieve the metrics.
+in grafana:
+`Dashboard` -> `New dashboard` -> `Data Source` -> `Prometheus`
+CPU utilisation can be queried from the default grafana stack by the parameters:
+metrics:
 
+CPU: container_cpu_usage_seconds_total (total CPU usage)
+Memory: container_memory_usage_bytes (Memory usage in bytes)
 
