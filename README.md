@@ -48,6 +48,7 @@ You can now check in `http://localhost:5000`:
 ![Screenshot 2024-10-07 051955](https://github.com/user-attachments/assets/b621bfbd-fdd7-419f-9d79-d6d051c703bc)
 
 The deployment above also has a rolling update strategy and a horizontal autoscaler if more than 70% of CPU is utilised
+
 *Path-based routing via ingress is possible through a fully qualified domain name (FQDN), the route configured here is "/interview-app"
 
 ## Task 2: CI/CD Integration:
