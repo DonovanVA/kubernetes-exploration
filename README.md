@@ -1,10 +1,15 @@
 # Interview-task
 ## Pre-requisite: Install minikube for local testing of 1. and 3.:
-The following local minikube must be installed on an amd/64 architecture device, to follow the standardize the same architecture across Azure and github actions (github actions build images using amd64) or you will be getting ImagePullBackoff
+The following local minikube must be installed on an amd/64 architecture device, to follow and standardize the same architecture across Azure and github actions (github actions build images using amd64) or you would be getting ImagePullBackoff
+
 Checkout how to install minikube for local cluster:
 https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Farm64%2Fstable%2Fbinary+download
+
 * Ensure that your Docker Daemon is also installed and running from https://www.docker.com/products/docker-desktop/, then run the following command to start the clusterm this will also enable the `kubectl` CLI:
 * Also ensure that helm is installed: https://helm.sh/docs/intro/install/
+
+Architecture Diagram:
+
 ![Screenshot 2024-10-07 051825](https://github.com/user-attachments/assets/70c7c56d-736a-401c-a61b-5530ededf232)
 
 1. Install nginx
@@ -40,7 +45,7 @@ You can now check in `http://localhost:5000`
 
 ![Screenshot 2024-10-07 051955](https://github.com/user-attachments/assets/b621bfbd-fdd7-419f-9d79-d6d051c703bc)
 
-The deployment above also have rolling update strategy and a horizontal autoscaler if more than 70% of CPU is utilised
+The deployment above also has a rolling update strategy and a horizontal autoscaler if more than 70% of CPU is utilised
 *Path-based routing via ingress is possible through a fully qualified domain name (FQDN), the route configured here is "/interview-app"
 
 ## Task 2: CI/CD Integration:
@@ -84,6 +89,7 @@ default grafana credentials:
 prometheus will extract metrics from the application, and then grafana will interface it and retrieve the metrics.
 in grafana:
 `Dashboard` -> `New dashboard` -> `Data Source` -> `Prometheus`
+
 CPU utilisation can be queried from the default grafana stack by the parameters:
 metrics:
 ![Screenshot 2024-10-07 043910](https://github.com/user-attachments/assets/c9d5ef69-9621-4698-9a91-547c4ef0bd4b)
