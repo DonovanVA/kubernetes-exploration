@@ -5,6 +5,7 @@ Checkout how to install minikube for local cluster:
 https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Farm64%2Fstable%2Fbinary+download
 * Ensure that your Docker Daemon is also installed and running from https://www.docker.com/products/docker-desktop/, then run the following command to start the clusterm this will also enable the `kubectl` CLI:
 * Also ensure that helm is installed: https://helm.sh/docs/intro/install/
+![Screenshot 2024-10-07 051825](https://github.com/user-attachments/assets/70c7c56d-736a-401c-a61b-5530ededf232)
 
 1. Install nginx
 ```bash
@@ -38,8 +39,10 @@ Expose the service via portforwarding:
 ```bash
 kubectl port-forward service/interview-app-service 5000:80
 ```
-You can also check
-The deployment above also have rolling update strategy and an autoscaler if more than 70% of CPU is utilised
+You can now check in `http://localhost:5000`
+![Screenshot 2024-10-07 051955](https://github.com/user-attachments/assets/b621bfbd-fdd7-419f-9d79-d6d051c703bc)
+
+The deployment above also have rolling update strategy and a horizontal autoscaler if more than 70% of CPU is utilised
 *Path-based routing via ingress is possible through a fully qualified domain name (FQDN), the route configured here is "/interview-app"
 
 #### 2. CI/CD Integration:
@@ -76,7 +79,6 @@ kubectl port-forward -n kube-prometheus-stack svc/kube-prometheus-stack-grafana 
 
 prometheus will be found on: `http://localhost:9090` and grafana will be found on `http://localhost:8080`
 
-
 default grafana credentials:
 - username: admin
 - pw: prom-operator
@@ -86,7 +88,9 @@ in grafana:
 `Dashboard` -> `New dashboard` -> `Data Source` -> `Prometheus`
 CPU utilisation can be queried from the default grafana stack by the parameters:
 metrics:
-
+![Screenshot 2024-10-07 043910](https://github.com/user-attachments/assets/c9d5ef69-9621-4698-9a91-547c4ef0bd4b)
 CPU: container_cpu_usage_seconds_total (total CPU usage)
+
+![Screenshot 2024-10-07 043920](https://github.com/user-attachments/assets/26ca36fc-539a-4f84-b9e8-630e5414eef9)
 Memory: container_memory_usage_bytes (Memory usage in bytes)
 
