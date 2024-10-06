@@ -1,4 +1,4 @@
-![Screenshot 2024-10-07 043920](https://github.com/user-attachments/assets/7a7fbb50-9e0d-41b2-ac60-8ec36ee32323)# Interview-task
+# Interview-task
 ## Install minikube for local testing of 1. and 3.:
 The following local minikube must be installed on an amd/64 architecture device, to follow the standardize the same architecture across Azure and github actions (github actions build images using amd64) or you will be getting ImagePullBackoff
 Checkout how to install minikube for local cluster:
