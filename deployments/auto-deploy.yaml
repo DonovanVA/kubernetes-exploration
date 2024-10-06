@@ -8,6 +8,11 @@ spec:
   selector:
     matchLabels:
       app: interview-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -32,14 +37,13 @@ spec:
               cpu: "250m"
             limits:
               memory: "256Mi"
-              cpu: "500m"
-              
+              cpu: "500m"  
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: interview-app-service
-  namespace:  default #interview-app
+  namespace:  default
 spec:
   selector:
     app: interview-app
@@ -52,16 +56,31 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: interview-app-ingress
+  namespace: default
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - http:
-        paths:
-          - path: /interview-app
-            pathType: Prefix
-            backend:
-              service:
-                name: interview-app-service
-                port:
-                  number: 80
+  - http:
+      paths:
+        - path: /interview-app
+          pathType: Prefix
+          backend:
+            service:
+              name: interview-app-service
+              port:
+                number: 80
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: interview-app-hpa
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: interview-app
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 70

@@ -13,11 +13,8 @@ RUN npm install
 # Copy the rest of the application code to the container
 COPY . .
 
-# Build the React app
-RUN npm run build
-
-# Expose the port your app will run on (default is 3000)
+# Expose the port your app will run on
 EXPOSE 3000
 
-# Start the React app
-CMD ["npm", "start"]
+# Start the Node.js app
+CMD ["node", "server.js"]
