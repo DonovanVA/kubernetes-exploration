@@ -55,20 +55,20 @@ The deployment above also has a rolling update strategy and a horizontal autosca
 This workflow is suitable for Azure kubernetes service (AKS) using Azure service principal (Unforunately, I do not have access to an AKS at the moment, the current secrets are dummy secrets)
 the following workflow is triggered on commit to `main` branch using Github actions:
 These are the repository secrets required under `settings` -> `Secrets and Variables` -> `Actions` -> `Repository Secrets`:
-- DOCKER_USERNAME - username of your docker account (donnyvan)
-- DOCKER_PASSWORD - password of your docker account
-- KUBE_CREDENTIALS_CLIENTID: Azure service principal client ID
-- KUBE_CREDENTIALS_CLIENTSECRET: Azure service principal client secret
-- KUBE_CREDENTIALS_TENANTID: Azure tenant ID
-- KUBE_CREDENTIALS_SUBSCRIPTIONID: Azure subscription ID
+- `DOCKER_USERNAME` - username of your docker account (donnyvan)
+- `DOCKER_PASSWORD` - password of your docker account
+- `KUBE_CREDENTIALS_CLIENTID`: Azure service principal client ID
+- `KUBE_CREDENTIALS_CLIENTSECRET`: Azure service principal client secret
+- `KUBE_CREDENTIALS_TENANTID`: Azure tenant ID
+- `KUBE_CREDENTIALS_SUBSCRIPTIONID`: Azure subscription ID
 
 Additionally, you have to enable the workflow to read and write files under `repo` -> `settings` -> `Actions` -> `General` -> `Workflow permissions` -> `Read and Write permissions` to trigger cross-repository dispatch since the CI/CD workflow has to be triggered sequentially whenever there is a commit to `main`, here is a quick overview of the workflow:
-1. 00-retrieves-secrets.yaml storing all the secrets
-2. 01-docker-build-push.yaml to build and push images to dockerhub 
-3. 02-apply-deploy.yaml to apply the kubernetes configurations in `/deployments` folder:
-    - config-map.yaml
-    - secrets.yaml
-    - auto-deploy.yaml
+1. `00-retrieves-secrets.yaml` storing all the secrets
+2. `01-docker-build-push.yaml` to build and push images to dockerhub 
+3. `02-apply-deploy.yaml` to apply the kubernetes configurations in `/deployments` folder:
+    - `config-map.yaml`
+    - `secrets.yaml`
+    - `auto-deploy.yaml`
 
 ## Task 3: Monitoring setup:
 
