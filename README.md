@@ -41,7 +41,7 @@ Expose the service via portforwarding:
 ```bash
 kubectl port-forward service/interview-app-service 5000:80
 ```
-You can now check in `http://localhost:5000`
+You can now check in `http://localhost:5000`:
 
 ![Screenshot 2024-10-07 051955](https://github.com/user-attachments/assets/b621bfbd-fdd7-419f-9d79-d6d051c703bc)
 
