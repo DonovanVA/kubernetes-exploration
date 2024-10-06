@@ -89,9 +89,8 @@ default grafana credentials:
 prometheus will extract metrics from the application, and then grafana will interface it and retrieve the metrics.
 in grafana:
 `Dashboard` -> `New dashboard` -> `Data Source` -> `Prometheus`
+Here is a quick glance at the parameters:
 
-CPU utilisation can be queried from the default grafana stack by the parameters:
-metrics:
 ![Screenshot 2024-10-07 043910](https://github.com/user-attachments/assets/c9d5ef69-9621-4698-9a91-547c4ef0bd4b)
 CPU: container_cpu_usage_seconds_total (total CPU usage)
 
