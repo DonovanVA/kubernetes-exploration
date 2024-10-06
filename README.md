@@ -15,20 +15,17 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main
 ```bash
 minikube start
 ```
-  if an error occurs or if you have previously ran a cluster, run `minikube delete`
-
-  then install and view the minikube kubectl CLI:
+*if an error occurs or if you have previously ran a cluster, run `minikube delete`, then `minikube start` then install and view the minikube kubectl CLI:
 ```bash
 minikube kubectl -- get po -A
 ```
-  and enable ingress addon:
+3. enable ingress addon:
 ```bash
 minikube addons enable ingress
 minikube addons enable ingress-dns
 ```
 
-
-#### 1. Kubernetes Deployment:
+## 1. Kubernetes Deployment:
 Run the following set of commands to launch deployment of deployment, service, configMap, secrets and ingress
 ``` bash
 kubectl apply -f ./deployments/config-map.yaml
@@ -46,7 +43,7 @@ You can now check in `http://localhost:5000`
 The deployment above also have rolling update strategy and a horizontal autoscaler if more than 70% of CPU is utilised
 *Path-based routing via ingress is possible through a fully qualified domain name (FQDN), the route configured here is "/interview-app"
 
-#### 2. CI/CD Integration:
+## 2. CI/CD Integration:
 This workflow is suitable for Azure kubernetes service (AKS) using Azure service principal (Unforunately, I do not have access to an AKS at the moment, the current secrets are dummy secrets)
 the following workflow is triggered on commit to `main` branch using Github actions:
 These are the repository secrets required under `settings` -> `Secrets and Variables` -> `Actions` -> `Repository Secrets`:
@@ -65,7 +62,7 @@ Additionally, you have to enable the workflow to read and write files under `rep
     - secrets.yaml
     - auto-deploy.yaml
 
-#### 3. Monitoring setup:
+## 3. Monitoring setup:
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
