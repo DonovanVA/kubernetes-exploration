@@ -11,17 +11,17 @@ https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Farm64%2Fstable%2Fbinary
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 ```
-
+2. Start minikube
 ```bash
 minikube start
 ```
-if an error occurs or if you have previously ran a cluster, run `minikube delete`
+  if an error occurs or if you have previously ran a cluster, run `minikube delete`
 
-then install and view the minikube kubectl CLI:
+  then install and view the minikube kubectl CLI:
 ```bash
 minikube kubectl -- get po -A
 ```
-and enable ingress addon:
+  and enable ingress addon:
 ```bash
 minikube addons enable ingress
 minikube addons enable ingress-dns
@@ -40,6 +40,7 @@ Expose the service via portforwarding:
 kubectl port-forward service/interview-app-service 5000:80
 ```
 You can now check in `http://localhost:5000`
+
 ![Screenshot 2024-10-07 051955](https://github.com/user-attachments/assets/b621bfbd-fdd7-419f-9d79-d6d051c703bc)
 
 The deployment above also have rolling update strategy and a horizontal autoscaler if more than 70% of CPU is utilised
