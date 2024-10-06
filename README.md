@@ -40,7 +40,7 @@ kubectl port-forward service/interview-app-service 5000:80
 ```
 You can also check
 The deployment above also have rolling update strategy and an autoscaler if more than 70% of CPU is utilised
-* Path-based routing via ingress is possible through a domain name.
+*Path-based routing via ingress is possible through a fully qualified domain name (FQDN), the route configured here is "/interview-app"
 
 #### 2. CI/CD Integration:
 This workflow is suitable for Azure kubernetes service (AKS) using Azure service principal (Unforunately, I do not have access to an AKS at the moment, the current secrets are dummy secrets)
