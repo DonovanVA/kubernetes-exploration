@@ -2,7 +2,7 @@
 ## Pre-requisite: Install minikube for local testing of Task 1 and Task 3
 The following local minikube must be installed on an amd64 architecture device, to follow and standardize the same architecture across Azure and github actions (github actions build images using amd64) or you would be getting ImagePullBackoff Error
 
-Checkout how to install minikube for local cluster:
+Checkout how to install minikube for local cluster (Preferrably windows OS):
 https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Farm64%2Fstable%2Fbinary+download
 
 * Ensure that your Docker Daemon is also installed and running from https://www.docker.com/products/docker-desktop/, then run the following command to start the clusterm this will also enable the `kubectl` CLI:
