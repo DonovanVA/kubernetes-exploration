@@ -79,10 +79,12 @@ helm install kube-prometheus-stack \
   --create-namespace \
   --namespace kube-prometheus-stack \
   prometheus-community/kube-prometheus-stack
+```
+Port forward the prometheus and grafana services:
+```bash
 kubectl port-forward -n kube-prometheus-stack svc/kube-prometheus-stack-prometheus 9090:9090
 kubectl port-forward -n kube-prometheus-stack svc/kube-prometheus-stack-grafana 8080:80
 ```
-
 prometheus will be found on: `http://localhost:9090` and grafana will be found on `http://localhost:8080`
 
 default grafana credentials:
