@@ -71,6 +71,10 @@ Additionally, you have to enable the workflow to read and write files under `rep
     - `auto-deploy.yaml`
 
 ## Task 3: Monitoring setup:
+### default prometheus and grafana for latency:
+This is the default prometheus and grafana stack which has almost all the necessary metrics by default
+
+1. Install kube-prometheus-stack using helm
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
@@ -79,13 +83,14 @@ helm install kube-prometheus-stack \
   --namespace kube-prometheus-stack \
   prometheus-community/kube-prometheus-stack
 ```
-Port forward the prometheus and grafana services:
+2. Port forward the prometheus and grafana services from the kube-prometheus-stack:
 ```bash
 kubectl port-forward -n kube-prometheus-stack svc/kube-prometheus-stack-prometheus 9090:9090
 kubectl port-forward -n kube-prometheus-stack svc/kube-prometheus-stack-grafana 8080:80
 ```
 prometheus will be found on: `http://localhost:9090` and grafana will be found on `http://localhost:8080`
 
+3. Login to grafana using the default grafana credentials
 default grafana credentials:
 - username: admin
 - pw: prom-operator
@@ -103,17 +108,22 @@ CPU: container_cpu_usage_seconds_total (total CPU usage)
 Memory: container_memory_usage_bytes (Memory usage in bytes)
 
 ### Custom prometheus and grafana for latency:
-Create namespaces for grafana, prometheus and monitoring
+
+If you want additional custom metrics, you can code out the nodejs server to query for other metrics such as latency. 
+The current container at donnyvan/interview-app:latest queries the duration of https requests and stores them as a histogram, and can be queried by prometheus using the `prom-client`
+You can see the code in server.js
+
+1. Create namespaces for grafana, prometheus and monitoring
 ```bash
 kubectl create namespace grafana
 kubectl create namespace prometheus
 kubectl create namespace monitoring
 ```
-apply the configurations files
+2. apply the configurations files
 ```bash
 kubectl apply -f ./monitoring
 ```
-portforward the prometheus and grafana monitoring services
+3. portforward the prometheus and grafana monitoring services
 ```bash
 kubectl port-forward -n prometheus svc/prometheus-service 9090:9090
 kubectl port-forward -n grafana svc/grafana-service 8080:3000
