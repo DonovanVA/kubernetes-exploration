@@ -33,7 +33,7 @@ minikube addons enable ingress-dns
 ```
 
 ## Task 1: Kubernetes Deployment:
-Run the following set of commands to launch deployment of deployment, service, configMap, secrets and ingress
+(Method 1) Run the following set of commands to launch deployment of deployment, service, configMap, secrets and ingress
 ``` bash
 kubectl apply -f ./deployments/config-map.yaml
 kubectl apply -f ./deployments/secrets.yaml
@@ -52,7 +52,7 @@ The deployment above also has a rolling update strategy and a horizontal autosca
 *Path-based routing via ingress is possible through a fully qualified domain name (FQDN), the route configured here is "/interview-app"
 
 ## Task 2: CI/CD Integration:
-This workflow is suitable for Azure kubernetes service (AKS) using Azure service principal (Unforunately, I do not have access to an AKS at the moment, the current secrets are dummy secrets)
+(Method 2) This workflow is suitable for Azure kubernetes service (AKS) using Azure service principal (Unforunately, I do not have access to an AKS at the moment, the current secrets are dummy secrets)
 the following workflow is triggered on commit to `main` branch using Github actions:
 These are the repository secrets required under `settings` -> `Secrets and Variables` -> `Actions` -> `Repository Secrets`:
 - `DOCKER_USERNAME` - username of your docker account (donnyvan)
