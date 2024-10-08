@@ -71,7 +71,7 @@ Additionally, you have to enable the workflow to read and write files under `rep
     - `auto-deploy.yaml`
 
 ## Task 3: Monitoring setup:
-### default prometheus and grafana for latency:
+### Default prometheus and grafana for latency:
 This is the default prometheus and grafana stack which has almost all the necessary metrics by default
 
 1. Install kube-prometheus-stack using helm
