@@ -110,7 +110,7 @@ Memory: container_memory_usage_bytes (Memory usage in bytes)
 ### Custom prometheus and grafana for latency:
 
 If you want additional custom metrics, you can code out the nodejs server to query for other metrics such as latency. 
-The current container at donnyvan/interview-app:latest queries the duration of https requests and stores them as a histogram, and can be queried by prometheus using the `prom-client`
+The current container at `donnyvan/interview-app:latest` is already able to query the duration of https requests and stores them as a histogram, and can be queried by prometheus using the `prom-client`
 You can see the code in server.js
 
 1. Create namespaces for grafana, prometheus and monitoring
