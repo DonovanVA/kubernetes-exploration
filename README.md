@@ -109,6 +109,12 @@ kubectl create namespace grafana
 kubectl create namespace prometheus
 kubectl create namespace monitoring
 ```
+change the ip addresses of your internal services in prometheus.yml:
+
+![Screenshot 2024-10-08 182048](https://github.com/user-attachments/assets/69792d54-0e89-43f2-b51e-96905eb38c84)
+
+The ip addresses should come together when you create the service it is the `CLUSTER-IP`. If it has no `CLUSTER-IP` then `minikube-ip` must be used, which can be queries by minikube ip
+
 apply the configurations files
 ```bash
 kubectl apply -f ./monitoring
@@ -123,3 +129,6 @@ kubectl port-forward -n grafana svc/grafana-service 8080:3000
 The `Dashboards` -> `Create visualisation` -> `Prometheus` 
 Then under metrics you can query for the histogram latency by typing:
 `sum(rate(http_requests_total[1m]))`
+
+![Screenshot 2024-10-08 181718](https://github.com/user-attachments/assets/61f7b8bb-686f-40d6-815a-905a9a51447a)
+Latency: histogram_quantile(0.95, sum(rate(http_request_duration_ms_bucket[5m])) by (le))
