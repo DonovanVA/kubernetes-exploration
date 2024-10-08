@@ -123,7 +123,7 @@ change the ip addresses of your internal services in prometheus.yml:
 
 ![Screenshot 2024-10-08 182048](https://github.com/user-attachments/assets/69792d54-0e89-43f2-b51e-96905eb38c84)
 
-The ip addresses should come together when you create the service it is the `CLUSTER-IP`. If it has no `CLUSTER-IP` then `minikube-ip` must be used, which can be queries by `minikube ip`
+The ip addresses should come together when you create the service it is the `CLUSTER-IP`. If it has no `CLUSTER-IP` then the minikube ip address must be used, which can be queries by `minikube ip`
 
 2. Apply the configurations files
 ```bash
