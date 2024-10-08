@@ -125,11 +125,11 @@ change the ip addresses of your internal services in prometheus.yml:
 
 The ip addresses should come together when you create the service it is the `CLUSTER-IP`. If it has no `CLUSTER-IP` then `minikube-ip` must be used, which can be queries by `minikube ip`
 
-2. apply the configurations files
+2. Apply the configurations files
 ```bash
 kubectl apply -f ./monitoring
 ```
-3. portforward the prometheus and grafana monitoring services
+3. Port forward the prometheus and grafana monitoring services
 ```bash
 kubectl port-forward -n prometheus svc/prometheus-service 9090:9090
 kubectl port-forward -n grafana svc/grafana-service 8080:3000
