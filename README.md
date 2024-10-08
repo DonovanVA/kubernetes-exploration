@@ -71,7 +71,6 @@ Additionally, you have to enable the workflow to read and write files under `rep
     - `auto-deploy.yaml`
 
 ## Task 3: Monitoring setup:
-
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
@@ -95,7 +94,7 @@ prometheus will extract metrics from the application, and then grafana will inte
 in grafana:
 `Dashboard` -> `New dashboard` -> `Data Source` -> `Prometheus`
 
-Here is a quick glance at the metrics:
+Here is a quick glance at the default metrics:
 
 ![Screenshot 2024-10-07 043910](https://github.com/user-attachments/assets/c9d5ef69-9621-4698-9a91-547c4ef0bd4b)
 CPU: container_cpu_usage_seconds_total (total CPU usage)
@@ -103,3 +102,24 @@ CPU: container_cpu_usage_seconds_total (total CPU usage)
 ![Screenshot 2024-10-07 043920](https://github.com/user-attachments/assets/26ca36fc-539a-4f84-b9e8-630e5414eef9)
 Memory: container_memory_usage_bytes (Memory usage in bytes)
 
+### Custom prometheus and grafana for latency:
+Create namespaces for grafana, prometheus and monitoring
+```bash
+kubectl create namespace grafana
+kubectl create namespace prometheus
+kubectl create namespace monitoring
+```
+apply the configurations files
+```bash
+kubectl apply -f ./monitoring
+```
+portforward the prometheus and grafana monitoring services
+```bash
+kubectl port-forward -n prometheus svc/prometheus-service 9090:9090
+kubectl port-forward -n grafana svc/grafana-service 8080:3000
+```
+
+`Home` -> `Connections` -> `Data sources` -> Under prometheus server URL add:`http://prometheus-service.prometheus.svc.cluster.local:9090`
+The `Dashboards` -> `Create visualisation` -> `Prometheus` 
+Then under metrics you can query for the histogram latency by typing:
+`sum(rate(http_requests_total[1m]))`
