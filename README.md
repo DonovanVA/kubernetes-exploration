@@ -10,7 +10,7 @@ https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Farm64%2Fstable%2Fbinary
 
 Architecture Diagram:
 
-![Screenshot 2024-10-07 051825](https://github.com/user-attachments/assets/70c7c56d-736a-401c-a61b-5530ededf232)
+<img width="602" alt="Screenshot 2024-11-02 at 11 46 37 AM" src="https://github.com/user-attachments/assets/357bc92c-70e5-4e98-9fb0-7103298e17e9">
 
 1. Install nginx
 ```bash
