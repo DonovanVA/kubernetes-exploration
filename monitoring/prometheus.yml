@@ -8,26 +8,15 @@ data:
   prometheus.yml: |
     global:
       scrape_interval: 15s
-
+      
     scrape_configs:
       - job_name: 'prometheus'
         static_configs:
-          - targets: ['10.105.121.237:9090']
-
+          - targets: ['prometheus-service.prometheus.svc.cluster.local:9090']
       - job_name: 'interview-app'
         scrape_interval: 15s
         static_configs:
-          - targets: ['10.109.58.9:80']
-
-      - job_name: 'node-exporter'
-        static_configs:
-          - targets: ['10.100.48.76:9100']
-        
-      - job_name: 'kubelet'
-        metrics_path: '/metrics'
-        scheme: "http"
-        static_configs:
-          - targets: ['192.168.49.2:10255']
+          - targets: ['interview-app-service.default.svc.cluster.local:80']
 ---
 apiVersion: apps/v1
 kind: Deployment

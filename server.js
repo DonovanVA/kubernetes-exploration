@@ -9,7 +9,7 @@ const port = 3000;
 const collectDefaultMetrics = promClient.collectDefaultMetrics;
 collectDefaultMetrics();
 
-// Create a custom histogram for tracking request duration
+// Create a custom histogram for tracking request duration (<50,<100,<200)
 const httpRequestDurationMicroseconds = new promClient.Histogram({
   name: 'http_request_duration_ms',
   help: 'Duration of HTTP requests in ms',
@@ -20,9 +20,12 @@ const httpRequestDurationMicroseconds = new promClient.Histogram({
 // Middleware to measure request latency
 app.use((req, res, next) => {
   const end = httpRequestDurationMicroseconds.startTimer();
+
   res.on('finish', () => {
-    end({ method: req.method, route: req.route ? req.route.path : '', status_code: res.statusCode });
+    const route = req.route?.path || req._parsedUrl.pathname || 'unknown';
+    end({ method: req.method, route: route, status_code: res.statusCode });
   });
+
   next();
 });
 
@@ -41,6 +44,19 @@ app.get('/metrics', async (req, res) => {
   }
 });
 
+  // Simulate fluctuating, laggy response time between 50ms and 500ms
+app.get('/lag', async (req, res) => {
+  const delay = Math.floor(Math.random() * 150) + 50;
+
+  setTimeout(() => {
+    res.send(`Lag delay of ${delay}ms`);
+  }, delay);
+});
+
+// Bad endpoint to simulate an error
+app.get('/bad', (req, res) => {
+  res.status(500).send('Internal Server Error');
+});
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

@@ -53,3 +53,4 @@ metadata:
 type: Opaque
 data:
   GF_SECURITY_ADMIN_PASSWORD: cHJvbS1vcGVyYXRvcg==
+# prom-operator
