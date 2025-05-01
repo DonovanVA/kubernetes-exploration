@@ -39,7 +39,7 @@ jobs:
           TENANT_ID: ${{ secrets.KUBE_CREDENTIALS_TENANTID }}
         run: |
           az account set --subscription "${{env.SUBSCRIPTION_ID}}"
-          az aks get-credentials --resource-group "demogroup" --name "democluster"
+          az aks get-credentials --resource-group "democluster_group" --name "democluster"
         
       - name: Replace Placeholder in File
         env:

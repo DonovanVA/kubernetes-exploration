@@ -162,13 +162,11 @@ configure a `DYNATRACE_API_URL` and `DYNATRACE_API_TOKEN` with `Metrics Ingest` 
 - Events Ingest `https://{DYNATRACE_API_URL}/api/v2/metrics/ingest`
 
 
-
-
 ### MISC
 
 ```
 az ad sp create-for-rbac --name demo --role Contributor --scopes /subscriptions/ecff18ba-e64f-4d8f-accb-dd8705d40c40
 az ad sp credential list --id d547225f-a547-4549-b31f-f596b2e2544b
 az ad sp credential list --id 0e21f7cb-eb9f-4868-ace0-68c603c839e8
-az aks show --resource-group demogroup --name democluster
+az aks show --resource-group democluster_group --name democluster
 ```
