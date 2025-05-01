@@ -45,6 +45,7 @@ metadata:
   name: interview-app-service
   namespace:  default
 spec:
+  type: LoadBalancer  # added
   selector:
     app: interview-app
   ports:
@@ -60,10 +61,11 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx  
   rules:
   - http:
       paths:
-        - path: /interview-app
+        - path: /
           pathType: Prefix
           backend:
             service:

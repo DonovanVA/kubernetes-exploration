@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
   res.send('Hi this is interview-app!');
 });
 
-// Prometheus default metrics endpoint
+// 1. Prometheus default metrics endpoint
 app.get('/metrics', async (req, res) => {
   try {
     res.set('Content-Type', promClient.register.contentType);
@@ -48,7 +48,7 @@ app.get('/metrics', async (req, res) => {
   }
 });
 
-// response time between 50ms and 200ms
+// 2. response time between 50ms and 200ms
 app.get('/lag', async (req, res) => {
   const delay = Math.floor(Math.random() * 150) + 50;
   setTimeout(() => {
@@ -61,7 +61,7 @@ app.get('/lag', async (req, res) => {
   }, delay);
 });
 
-// Bad endpoint to simulate an error
+// 3. Bad endpoint to simulate an error
 app.get('/bad', (req, res) => {
   res.status(500).send('Internal Server Error');
   sendBusinessEvent('Internal Server Error', 'ERROR', 'Issue with /bad');

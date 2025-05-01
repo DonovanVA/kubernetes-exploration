@@ -159,14 +159,56 @@ kubectl port-forward service/interview-app-service 5000:80
 ### Dynatrace
 configure a `DYNATRACE_API_URL` and `DYNATRACE_API_TOKEN` with `Metrics Ingest` and `Events Ingest` in .env
 - Metrics Ingest `https://{DYNATRACE_API_URL}/api/v2/metrics/ingest`
-- Events Ingest `https://{DYNATRACE_API_URL}/api/v2/metrics/ingest`
+- Events Ingest `https://{DYNATRACE_API_URL}/api/v2/events/ingest`
 
 
-### MISC
 
+
+### AKS (miscellaneous)
+
+We configure an AKS:
+Cluster name: democluster
+Resource group: democluster_group
+
+# Create RBAC (service principal for CI/CD)
 ```
 az ad sp create-for-rbac --name demo --role Contributor --scopes /subscriptions/ecff18ba-e64f-4d8f-accb-dd8705d40c40
 az ad sp credential list --id d547225f-a547-4549-b31f-f596b2e2544b
-az ad sp credential list --id 0e21f7cb-eb9f-4868-ace0-68c603c839e8
 az aks show --resource-group democluster_group --name democluster
 ```
+# Create and configure ingress-nginx
+```
+kubectl create namespace ingress-nginx
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
+helm install ingress-nginx ingress-nginx/ingress-nginx \
+  --namespace ingress-nginx \
+  --set controller.publishService.enabled=true
+```
+
+# Configure FQDN:
+1. Get the name of the IP resource on azure
+```
+az network public-ip list --query "[?ipAddress=='134.33.201.226']"
+
+```
+
+2. Get DNS:
+```
+az network public-ip update \
+  --name kubernetes-a40ff7c20318d457cbe7f9eddd304b38 \
+  --resource-group MC_democluster_group_democluster_eastus \
+  --dns-name interviewapp
+```
+
+
+demo dns:`interviewapp.eastus.cloudapp.azure.com`
+namespaces
+- default
+- ingress-nginx
+
+
+# DEMO:
+1. CI/CD for cluster
+2. prometheus and grafana alerts
