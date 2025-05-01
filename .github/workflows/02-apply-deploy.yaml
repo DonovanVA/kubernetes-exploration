@@ -39,14 +39,14 @@ jobs:
           TENANT_ID: ${{ secrets.KUBE_CREDENTIALS_TENANTID }}
         run: |
           az account set --subscription "${{env.SUBSCRIPTION_ID}}"
-          az aks get-credentials --resource-group "rclu_group" --name "rcluster"
+          az aks get-credentials --resource-group "demogroup" --name "democluster"
         
       - name: Replace Placeholder in File
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          sed -i 's/<GH_ACTION.docker_username>/${{env.DOCKER_USERNAME}}/g' ./deployments/deploy.yaml
-          cat ./deployments/deploy.yaml   
+          sed -i 's/<GH_ACTION.docker_username>/${{env.DOCKER_USERNAME}}/g' ./deployments/auto-deploy.yaml
+          cat ./deployments/auto-deploy.yaml   
       
       - name: Apply Kubernetes YAML
         run: | 
