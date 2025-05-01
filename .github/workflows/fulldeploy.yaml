@@ -12,16 +12,43 @@ jobs:
       - name: Check required secrets
         run: |
           missing=0
-          for var in DOCKER_USERNAME DOCKER_PASSWORD KUBE_CREDENTIALS_CLIENTID KUBE_CREDENTIALS_CLIENTSECRET KUBE_CREDENTIALS_SUBSCRIPTIONID KUBE_CREDENTIALS_TENANTID; do
-            if [ -z "${{ secrets[$var] }}" ]; then
-              echo "Missing secret: $var"
-              missing=1
-            fi
-          done
-          if [ $missing -eq 1 ]; then
+
+          if [ -z "${DOCKER_USERNAME}" ]; then
+            echo "Missing secret: DOCKER_USERNAME"
+            missing=1
+          fi
+          if [ -z "${DOCKER_PASSWORD}" ]; then
+            echo "Missing secret: DOCKER_PASSWORD"
+            missing=1
+          fi
+          if [ -z "${KUBE_CREDENTIALS_CLIENTID}" ]; then
+            echo "Missing secret: KUBE_CREDENTIALS_CLIENTID"
+            missing=1
+          fi
+          if [ -z "${KUBE_CREDENTIALS_CLIENTSECRET}" ]; then
+            echo "Missing secret: KUBE_CREDENTIALS_CLIENTSECRET"
+            missing=1
+          fi
+          if [ -z "${KUBE_CREDENTIALS_SUBSCRIPTIONID}" ]; then
+            echo "Missing secret: KUBE_CREDENTIALS_SUBSCRIPTIONID"
+            missing=1
+          fi
+          if [ -z "${KUBE_CREDENTIALS_TENANTID}" ]; then
+            echo "Missing secret: KUBE_CREDENTIALS_TENANTID"
+            missing=1
+          fi
+
+          if [ "$missing" -eq 1 ]; then
             echo "One or more secrets are missing. Failing the job."
             exit 1
           fi
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          KUBE_CREDENTIALS_CLIENTID: ${{ secrets.KUBE_CREDENTIALS_CLIENTID }}
+          KUBE_CREDENTIALS_CLIENTSECRET: ${{ secrets.KUBE_CREDENTIALS_CLIENTSECRET }}
+          KUBE_CREDENTIALS_SUBSCRIPTIONID: ${{ secrets.KUBE_CREDENTIALS_SUBSCRIPTIONID }}
+          KUBE_CREDENTIALS_TENANTID: ${{ secrets.KUBE_CREDENTIALS_TENANTID }}
 
   docker-build:
     runs-on: ubuntu-latest
