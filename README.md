@@ -1,5 +1,10 @@
 # Kubernetes Demo
-## Pre-requisite: Install minikube for local testing of Task 1 and Task 3
+In this demo I will demonstrate the following:
+1. Automated CI/CD for pushing new changes into kubernetes
+2. Prometheus and grafana
+3. Dynatrace (new)
+
+## Pre-requisite: Install minikube for local testing
 The following local minikube must be installed on an amd64 architecture device, to follow and standardize the same architecture across Azure and github actions (github actions build images using amd64) or you would be getting ImagePullBackoff error
 
 Checkout how to install minikube for local cluster (Preferrably windows OS):
@@ -124,15 +129,17 @@ change the ip addresses of your internal services in prometheus.yml:
 ![Screenshot 2024-10-08 182048](https://github.com/user-attachments/assets/69792d54-0e89-43f2-b51e-96905eb38c84)
 
 The ip addresses should come together when you create the service it is the `CLUSTER-IP`. If it has no `CLUSTER-IP` then the minikube ip address must be used, which can be queries by `minikube ip`
+prometheus cluster url: http://prometheus-service.prometheus.svc.cluster.local:9090
 
 2. Apply the configurations files
 ```bash
 kubectl apply -f ./monitoring
 ```
-3. Port forward the prometheus and grafana monitoring services
+3. Port forward the prometheus and grafana monitoring services and mailhog SMTP server
 ```bash
 kubectl port-forward -n prometheus svc/prometheus-service 9090:9090
 kubectl port-forward -n grafana svc/grafana-service 8080:3000
+kubectl port-forward -n grafana svc/mailhog 8025:8025
 ```
 
 `Home` -> `Connections` -> `Data sources` -> Under prometheus server URL add:`http://prometheus-service.prometheus.svc.cluster.local:9090`
@@ -143,3 +150,13 @@ Then under metrics you can query for the histogram latency by typing:
 ![Screenshot 2024-10-08 181718](https://github.com/user-attachments/assets/61f7b8bb-686f-40d6-815a-905a9a51447a)
 Latency: histogram_quantile(0.95, sum(rate(http_request_duration_ms_bucket[5m])) by (le))
 
+4. (Optional) Local expose interview-app:
+```bash
+kubectl port-forward service/interview-app-service 5000:80
+```
+
+
+### Dynatrace
+configure a `DYNATRACE_API_URL` and `DYNATRACE_API_TOKEN` with `Metrics Ingest` and `Events Ingest` in .env
+- Metrics Ingest `https://{DYNATRACE_API_URL}/api/v2/metrics/ingest`
+- Events Ingest `https://{DYNATRACE_API_URL}/api/v2/metrics/ingest`

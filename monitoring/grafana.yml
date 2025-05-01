@@ -24,6 +24,14 @@ spec:
                 secretKeyRef:
                   name: grafana-admin-secret
                   key: GF_SECURITY_ADMIN_PASSWORD
+            - name: GF_SMTP_ENABLED
+              value: "true"
+            - name: GF_SMTP_HOST
+              value: "mailhog:1025"
+            - name: GF_SMTP_FROM_ADDRESS
+              value: "grafana@example.local"
+            - name: GF_SMTP_FROM_NAME
+              value: "Grafana"
           volumeMounts:
             - name: grafana-storage
               mountPath: /var/lib/grafana
