@@ -81,6 +81,8 @@ jobs:
   deploy-k8s:
     runs-on: ubuntu-latest
     needs: docker-build
+    environment:
+      name: production
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       CLIENT_ID: ${{ secrets.KUBE_CREDENTIALS_CLIENTID }}
