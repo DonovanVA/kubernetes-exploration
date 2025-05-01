@@ -130,7 +130,7 @@ change the ip addresses of your internal services in prometheus.yml:
 
 The ip addresses should come together when you create the service it is the `CLUSTER-IP`. If it has no `CLUSTER-IP` then the minikube ip address must be used, which can be queries by `minikube ip`
 prometheus cluster url: http://prometheus-service.prometheus.svc.cluster.local:9090
-
+* gmail must have 2 step verification for app passwords to be used for SMTP server
 2. Apply the configurations files
 ```bash
 kubectl apply -f ./monitoring
@@ -162,21 +162,13 @@ configure a `DYNATRACE_API_URL` and `DYNATRACE_API_TOKEN` with `Metrics Ingest` 
 - Events Ingest `https://{DYNATRACE_API_URL}/api/v2/events/ingest`
 
 
-
-
 ### AKS (miscellaneous)
 
 We configure an AKS:
 Cluster name: democluster
 Resource group: democluster_group
 
-# Create RBAC (service principal for CI/CD)
-```
-az ad sp create-for-rbac --name demo --role Contributor --scopes /subscriptions/ecff18ba-e64f-4d8f-accb-dd8705d40c40
-az ad sp credential list --id d547225f-a547-4549-b31f-f596b2e2544b
-az aks show --resource-group democluster_group --name democluster
-```
-# Create and configure ingress-nginx
+##### Create and configure ingress-nginx
 ```
 kubectl create namespace ingress-nginx
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -186,12 +178,20 @@ helm install ingress-nginx ingress-nginx/ingress-nginx \
   --namespace ingress-nginx \
   --set controller.publishService.enabled=true
 ```
-
-# Configure FQDN:
+##### Create RBAC (service principal for CI/CD)
+```
+az ad sp create-for-rbac --name demo --role Contributor --scopes /subscriptions/ecff18ba-e64f-4d8f-accb-dd8705d40c40
+az ad sp credential list --id d547225f-a547-4549-b31f-f596b2e2544b
+az aks show --resource-group democluster_group --name democluster
+```
+(If reset credentials)
+```
+az ad sp credential reset --name demo
+```
+##### Configure FQDN:
 1. Get the name of the IP resource on azure
 ```
 az network public-ip list --query "[?ipAddress=='134.33.201.226']"
-
 ```
 
 2. Get DNS:
@@ -202,13 +202,16 @@ az network public-ip update \
   --dns-name interviewapp
 ```
 
-
 demo dns:`interviewapp.eastus.cloudapp.azure.com`
+
 namespaces
 - default
 - ingress-nginx
+- grafana
+- prometheus
 
-
-# DEMO:
+##### DEMO:
 1. CI/CD for cluster
 2. prometheus and grafana alerts
+3. Dynatrace
+

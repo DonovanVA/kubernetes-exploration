@@ -22,31 +22,16 @@ spec:
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: grafana-secrets
+                  name: grafana-admin-secret
                   key: GF_SECURITY_ADMIN_PASSWORD
             - name: GF_SMTP_ENABLED
               value: "true"
             - name: GF_SMTP_HOST
-              value: "smtp.gmail.com:587"
-            - name: GF_SMTP_USER
-              valueFrom:
-                secretKeyRef:
-                  name: grafana-secrets
-                  key: GF_SMTP_GMAILUSER
-            - name: GF_SMTP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: grafana-secrets
-                  key: GF_SMTP_GMAILPASSWORD
+              value: "mailhog:1025"
             - name: GF_SMTP_FROM_ADDRESS
-              valueFrom:
-                secretKeyRef:
-                  name: grafana-secrets
-                  key: GF_SMTP_GMAILUSER
+              value: "grafana@example.local"
             - name: GF_SMTP_FROM_NAME
               value: "Grafana"
-            - name: GF_SMTP_STARTTLS_POLICY
-              value: "Opportunistic"
           volumeMounts:
             - name: grafana-storage
               mountPath: /var/lib/grafana
@@ -71,10 +56,9 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: grafana-secrets
+  name: grafana-admin-secret
   namespace: grafana
 type: Opaque
 data:
   GF_SECURITY_ADMIN_PASSWORD: cHJvbS1vcGVyYXRvcg==
-  GF_SMTP_GMAILUSER: aW50ZXJ2aWV3ZXJhcHA0MkBnbWFpbC5jb20=
-  GF_SMTP_GMAILPASSWORD: b3RhYWxtZWRkanNndWFubw==
+# prom-operator
