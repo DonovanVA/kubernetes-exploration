@@ -110,7 +110,7 @@ async function sendBusinessEvent(eventName, severity, description) {
   };
 
   try {
-    await axios.post(`${dtApiUrl}/api/v2/events/ingest`, eventData, {
+    await axios.post(`${dtApiUrl}/api/v2/bizevents/ingest`, eventData, {
       headers: {
         'Authorization': `Api-Token ${apiToken}`,
         'Content-Type': 'application/json'
