@@ -45,7 +45,6 @@ metadata:
   name: interview-app-service
   namespace:  default
 spec:
-  type: LoadBalancer  # added
   selector:
     app: interview-app
   ports:
